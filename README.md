@@ -1,22 +1,22 @@
-# 🎓 Smart Education Analytics
+# Smart Education Analytics
 
 An AI-powered academic analytics platform for schools and colleges that analyzes student performance data and generates personalized insights, study plans, and recommendations using Spring AI and GPT.
 
 ---
 
-## 🚀 Features
+## Features
 
-- 📊 **Student Performance Tracking** — Marks, attendance, and quiz scores across all subjects
-- 🤖 **AI-Powered Insights** — GPT analyzes student data and identifies weak/strong areas
-- 📝 **Personalized Test Generation** — Auto-generates MCQs based on student's weak topics
-- 📚 **Smart Study Plans** — Daily/weekly revision plans tailored to each student
-- 👨‍👩‍👧 **Parent Dashboard** — Simplified performance summaries for parents
-- 🏫 **Teacher Dashboard** — Class-level heatmaps and low-performing student alerts
-- 🔐 **Role-Based Access** — Separate access for Admin, Teacher, Student, and Parent
+- **Student Performance Tracking** — Marks, attendance, and quiz scores across all subjects
+- **AI-Powered Insights** — GPT analyzes student data and identifies weak/strong areas
+- **Personalized Test Generation** — Auto-generates MCQs based on student's weak topics
+- **Smart Study Plans** — Daily/weekly revision plans tailored to each student
+- **Parent Dashboard** — Simplified performance summaries for parents
+- **Teacher Dashboard** — Class-level heatmaps and low-performing student alerts
+- **Role-Based Access** — Separate access for Admin, Teacher, Student, and Parent
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -30,7 +30,7 @@ An AI-powered academic analytics platform for schools and colleges that analyzes
 
 ---
 
-## 🗄️ Database Design
+## Database Design
 
 The system uses **11 tables** organized into 4 layers:
 
@@ -43,10 +43,10 @@ AI Layer          → ai_insights, personalized_tests, test_responses
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
-Make sure you have the following installed:
+
 - Java 21
 - Maven
 - MySQL 8
@@ -92,11 +92,11 @@ Or click the **Run** button in IntelliJ.
 http://localhost:8080/swagger-ui.html
 ```
 
-> ✅ Hibernate will automatically create all database tables on first run.
+Hibernate will automatically create all database tables on first run.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/main/java/com/smartedu/
@@ -109,7 +109,7 @@ src/main/java/com/smartedu/
 
 ---
 
-## 🔐 User Roles
+## User Roles
 
 | Role | Access |
 |---|---|
@@ -120,9 +120,9 @@ src/main/java/com/smartedu/
 
 ---
 
-## 📌 Project Status
+## Project Status
 
-🚧 **Currently in development**
+Currently in development.
 
 - [x] Project setup
 - [x] Database design
@@ -136,16 +136,15 @@ src/main/java/com/smartedu/
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-Contributions are welcome! Here's how you can help:
+Contributions are welcome.
 
 ### How to Contribute
 
 **1. Fork the repository**
-```
-Click the "Fork" button on the top right of this page
-```
+
+Click the "Fork" button on the top right of this page.
 
 **2. Clone your fork**
 ```bash
@@ -168,11 +167,11 @@ git commit -m "Add: your feature description"
 ```bash
 git push origin feature/your-feature-name
 ```
-Then go to GitHub → click **"Compare & Pull Request"** → describe your changes → submit!
+Then go to GitHub → click **"Compare & Pull Request"** → describe your changes → submit.
 
 ---
 
-### 📌 Contribution Guidelines
+### Contribution Guidelines
 
 - Follow existing code structure and naming conventions
 - Write clean, readable code with comments where necessary
@@ -182,31 +181,28 @@ Then go to GitHub → click **"Compare & Pull Request"** → describe your chang
 
 ---
 
-### 💡 Areas You Can Contribute To
+### Areas You Can Contribute To
 
 | Area | Description |
 |---|---|
-| 🐛 Bug Fixes | Fix any issues you find |
-| ✨ New Features | Add features from the roadmap |
-| 📖 Documentation | Improve README or add code comments |
-| 🧪 Tests | Write unit or integration tests |
-| 🎨 Frontend | Build the React/Angular dashboard |
+| Bug Fixes | Fix any issues you find |
+| New Features | Add features from the roadmap |
+| Documentation | Improve README or add code comments |
+| Tests | Write unit or integration tests |
+| Frontend | Build the React/Angular dashboard |
 
 ---
 
-### 🐛 Found a Bug?
-Go to the **Issues** tab → click **New Issue** → describe the bug and steps to reproduce it.
+**Found a bug?** Go to the Issues tab → New Issue → describe the bug and steps to reproduce.
 
-### 💬 Have an Idea?
-Go to the **Issues** tab → click **New Issue** → label it as `enhancement` and describe your idea.
+**Have an idea?** Go to the Issues tab → New Issue → label it `enhancement` and describe your idea.
 
 ---
 
-## 👩‍💻 Author
+## Author
 
-**Taniya**
-- GitHub: [@taniy8](https://github.com/taniy8)
+**Taniya** — [@taniy8](https://github.com/taniy8)
 
 ---
 
-> 💡 *This project is built as a full-stack AI-integrated backend system demonstrating skills in Spring Boot, JPA/Hibernate, MySQL, REST API design, and AI integration.*
+*This project is built as a full-stack AI-integrated backend system demonstrating skills in Spring Boot, JPA/Hibernate, MySQL, REST API design, and AI integration.*
