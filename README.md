@@ -199,9 +199,11 @@ Then go to GitHub → click **"Compare & Pull Request"** → describe your chang
 
 ---
 
-## Author
+## Authors
 
 **Taniya** — [@taniy8](https://github.com/taniy8)
+
+**Harishkrishnakumar** — [@Harishkrishnakumarr](https://github.com/Harishkrishnakumarr/Smart__Education)
 
 ---
 
