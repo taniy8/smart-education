@@ -3,31 +3,33 @@ package com.smartedu.smart_education.service.impl;
 import com.smartedu.smart_education.entity.User;
 import com.smartedu.smart_education.repository.UserRepository;
 import com.smartedu.smart_education.service.UserService;
-import jakarta.persistence.Table;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceimpl implements UserService {
+public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepo;
+    private final UserRepository userRepo;
+
+    public UserServiceImpl(UserRepository userRepo) {
+        this.userRepo = userRepo;
+    }
+
     @Override
     public User registerUser(User user) {
-      if(userRepo.existsByEmail(user.getEmail())) {
-          throw new RuntimeException("Email already registered: " + user.getEmail());
-      }
-      return userRepo.save(user);
+        if (userRepo.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("Email already registered: " + user.getEmail());
+        }
+        return userRepo.save(user);
     }
 
     @Override
     public User getUserById(Long id) {
-      return userRepo.findById(id)
-              .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        return userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
     @Override
@@ -49,7 +51,8 @@ public class UserServiceimpl implements UserService {
     @Override
     public void deactivateUserById(Long id) {
         User user = getUserById(id);
-       user.setIsActive(false);
+        user.setIsActive(false);
+        userRepo.save(user);
     }
 
     @Override
