@@ -8,7 +8,7 @@ public interface SubjectService {
     List<Subject> findBySubjectNameContainingIgnoreCase(String name);
     Subject addSubject(Subject subject);
     Subject getSubjectById(Long id);
-    void deleteSubjectById(Long id);
+    void deleteSubject(Long id);
     Subject updateSubject(Long id,Subject subject);
     Subject getSubjectByCode(String code);
     Subject getSubjectByClass(String className);
