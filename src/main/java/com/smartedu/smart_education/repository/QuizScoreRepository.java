@@ -10,5 +10,5 @@ import java.util.List;
 public interface QuizScoreRepository extends JpaRepository<QuizScore,Long> {
     List<QuizScore> findByStudentId(Long studentId);
 
-    List<QuizScore> findByQuizScoresByStudentAndSubject(Long studentId, Long subjectId);
+    List<QuizScore> findByStudentIdAndSubjectId(Long studentId, Long subjectId);
 }
