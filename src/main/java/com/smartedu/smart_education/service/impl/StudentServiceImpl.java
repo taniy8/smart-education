@@ -1,6 +1,7 @@
 package com.smartedu.smart_education.service.impl;
 
 import com.smartedu.smart_education.entity.Student;
+import com.smartedu.smart_education.entity.User;
 import com.smartedu.smart_education.repository.StudentRepository;
 import com.smartedu.smart_education.repository.UserRepository;
 import com.smartedu.smart_education.service.StudentService;
@@ -26,6 +27,9 @@ public class StudentServiceImpl implements StudentService {
        {
          throw  new RuntimeException("Student already exists");
        }
+        User user = userRepo.findById(student.getUser().getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        student.setUser(user);
         return studentRepo.save(student);
     }
 
