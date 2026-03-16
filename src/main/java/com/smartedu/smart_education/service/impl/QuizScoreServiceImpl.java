@@ -45,7 +45,7 @@ public class QuizScoreServiceImpl implements QuizScoreService {
 
     @Override
     public List<QuizScore> getQuizScoresByStudentAndSubject(Long studentId, Long subjectId) {
-        return quizScoreRepo.findByQuizScoresByStudentAndSubject(studentId,subjectId);
+        return quizScoreRepo.findByStudentIdAndSubjectId(studentId,subjectId);
     }
 
     @Override
