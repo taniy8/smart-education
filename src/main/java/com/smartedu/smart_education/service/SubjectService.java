@@ -11,5 +11,8 @@ public interface SubjectService {
     void deleteSubject(Long id);
     Subject updateSubject(Long id,Subject subject);
     Subject getSubjectByCode(String code);
-    Subject getSubjectByClass(String className);
+
+    List<Subject> getSubjectByClass(String className);
+
+     List<Subject> getAllSubjects();
 }

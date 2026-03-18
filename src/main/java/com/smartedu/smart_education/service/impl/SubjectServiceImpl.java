@@ -58,7 +58,12 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject getSubjectByClass(String className) {
+    public List<Subject> getSubjectByClass(String className) {
         return subjectRepo.findByClassName(className);
+    }
+
+    @Override
+    public List<Subject> getAllSubjects() {
+        return subjectRepo.findAll();
     }
 }
