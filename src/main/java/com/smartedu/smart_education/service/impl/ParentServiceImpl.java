@@ -1,8 +1,10 @@
 package com.smartedu.smart_education.service.impl;
 
 import com.smartedu.smart_education.entity.Parent;
+import com.smartedu.smart_education.entity.User;
 import com.smartedu.smart_education.repository.ParentRepository;
 import com.smartedu.smart_education.repository.StudentRepository;
+import com.smartedu.smart_education.repository.UserRepository;
 import com.smartedu.smart_education.service.ParentService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,12 @@ public class ParentServiceImpl implements ParentService {
 
     private final ParentRepository parentRepo;
     private final StudentRepository studentRepo;
+    private final UserRepository userRepo;
 
-    public ParentServiceImpl(ParentRepository parentRepo, StudentRepository studentRepo) {
+    public ParentServiceImpl(ParentRepository parentRepo, StudentRepository studentRepo, UserRepository userRepo) {
         this.parentRepo = parentRepo;
         this.studentRepo = studentRepo;
+        this.userRepo = userRepo;
     }
 
     @Override
@@ -36,6 +40,9 @@ public class ParentServiceImpl implements ParentService {
     public Parent addParent(Parent parent) {
         studentRepo.findById(parent.getStudent().getId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
+        User user = userRepo.findById(parent.getUser().getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        parent.setUser(user);
         return parentRepo.save(parent);
     }
 
