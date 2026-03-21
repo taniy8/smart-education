@@ -131,7 +131,7 @@ Currently in development.
 - [x] Service layer
 - [x] REST APIs
 - [x] JWT Authentication
-- [ ] Role based access
+- [x] Role based access
 - [ ] AI Integration
 - [ ] Frontend Dashboard
 
