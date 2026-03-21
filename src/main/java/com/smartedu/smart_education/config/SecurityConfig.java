@@ -30,6 +30,26 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
+                        // ADMIN only
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+
+                        // ADMIN + TEACHER
+                        .requestMatchers("/api/students/**").hasAnyRole("ADMIN", "TEACHER")
+                        .requestMatchers("/api/teachers/**").hasAnyRole("ADMIN", "TEACHER")
+                        .requestMatchers("/api/scores/**").hasAnyRole("ADMIN", "TEACHER")
+                        .requestMatchers("/api/attendance/**").hasAnyRole("ADMIN", "TEACHER")
+                        .requestMatchers("/api/subjects/**").hasAnyRole("ADMIN", "TEACHER")
+                        .requestMatchers("/api/quiz-scores/**").hasAnyRole("ADMIN", "TEACHER")
+
+                        // ADMIN + STUDENT
+                        .requestMatchers("/api/insights/**").hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers("/api/tests/**").hasAnyRole("ADMIN", "STUDENT")
+                        .requestMatchers("/api/test-responses/**").hasAnyRole("ADMIN", "STUDENT")
+
+                        // ADMIN + PARENT
+                        .requestMatchers("/api/parents/**").hasAnyRole("ADMIN", "PARENT")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
