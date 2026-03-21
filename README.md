@@ -130,7 +130,8 @@ Currently in development.
 - [x] Repository layer
 - [x] Service layer
 - [x] REST APIs
-- [ ] JWT Authentication
+- [x] JWT Authentication
+- [ ] Role based access
 - [ ] AI Integration
 - [ ] Frontend Dashboard
 
