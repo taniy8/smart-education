@@ -127,9 +127,9 @@ Currently in development.
 - [x] Project setup
 - [x] Database design
 - [x] Entity classes
-- [ ] Repository layer
-- [ ] Service layer
-- [ ] REST APIs
+- [x] Repository layer
+- [x] Service layer
+- [x] REST APIs
 - [ ] JWT Authentication
 - [ ] AI Integration
 - [ ] Frontend Dashboard
