@@ -2,6 +2,8 @@ package com.smartedu.smart_education.service.impl;
 
 import com.smartedu.smart_education.entity.Score;
 import com.smartedu.smart_education.repository.ScoreRepository;
+import com.smartedu.smart_education.repository.StudentRepository;
+import com.smartedu.smart_education.repository.SubjectRepository;
 import com.smartedu.smart_education.service.ScoreService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -12,17 +14,23 @@ import java.util.List;
 @Transactional
 public class ScoreServiceImpl implements ScoreService {
     private final ScoreRepository scoreRepo;
+    private final StudentRepository studentRepo;
+    private final SubjectRepository subjectRepo;
 
-    public ScoreServiceImpl(ScoreRepository scoreRepo) {
+    public ScoreServiceImpl(ScoreRepository scoreRepo, StudentRepository studentRepo, SubjectRepository subjectRepo) {
         this.scoreRepo = scoreRepo;
+        this.studentRepo = studentRepo;
+        this.subjectRepo = subjectRepo;
     }
 
     @Override
     public Score addScore(Score score) {
-        scoreRepo.findById(score.getStudent().getId())
-                .orElseThrow(()-> new RuntimeException("Student not found"));
-        scoreRepo.findById(score.getSubject().getId())
-                .orElseThrow(()-> new RuntimeException("Subject not found"));
+        studentRepo.findById(score.getStudent().getId())
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        subjectRepo.findById(score.getSubject().getId())
+                .orElseThrow(() -> new RuntimeException("Subject not found"));
+
         return scoreRepo.save(score);
     }
 
