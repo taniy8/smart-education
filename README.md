@@ -132,7 +132,7 @@ Currently in development.
 - [x] REST APIs
 - [x] JWT Authentication
 - [x] Role based access
-- [ ] AI Integration
+- [x] AI Integration
 - [ ] Frontend Dashboard
 
 ---
