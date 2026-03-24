@@ -59,6 +59,11 @@ public class GlobalExceptionHandler {
         response.put("status", status.value());
         response.put("message", message);
         response.put("timestamp", LocalDateTime.now());
+        response.put("errorCode", status.name());
         return ResponseEntity.status(status).body(response);
+    }
+    @ExceptionHandler(AiServiceException.class)
+    public ResponseEntity<Map<String, Object>> handleAiException(AiServiceException ex) {
+        return buildResponse(HttpStatus.SERVICE_UNAVAILABLE, "AI service error: " + ex.getMessage());
     }
 }
