@@ -3,6 +3,7 @@ package com.smartedu.smart_education.service.impl;
 import com.smartedu.smart_education.entity.PersonalizedTest;
 import com.smartedu.smart_education.entity.Student;
 import com.smartedu.smart_education.entity.Subject;
+import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.PersonalizedTestRepository;
 import com.smartedu.smart_education.repository.StudentRepository;
 import com.smartedu.smart_education.repository.SubjectRepository;
@@ -37,9 +38,9 @@ public class PersonalizedTestServiceImpl implements PersonalizedTestService {
                                          PersonalizedTest.Difficulty difficulty) {
         // Get student and subject
         Student student = studentRepo.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found: " + studentId));
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found: " + studentId));
         Subject subject = subjectRepo.findById(subjectId)
-                .orElseThrow(() -> new RuntimeException("Subject not found: " + subjectId));
+                .orElseThrow(() -> new ResourceNotFoundException("Subject not found: " + subjectId));
 
         // Build prompt
         String prompt = buildTestPrompt(student, subject, difficulty);
@@ -60,7 +61,7 @@ public class PersonalizedTestServiceImpl implements PersonalizedTestService {
     @Override
     public PersonalizedTest getTestById(Long id) {
         return testRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Test not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Test not found: " + id));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.smartedu.smart_education.service.impl;
 
 import com.smartedu.smart_education.entity.QuizScore;
+import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.QuizScoreRepository;
 import com.smartedu.smart_education.repository.StudentRepository;
 import com.smartedu.smart_education.repository.SubjectRepository;
@@ -26,16 +27,16 @@ public class QuizScoreServiceImpl implements QuizScoreService {
     @Override
     public QuizScore addQuizScore(QuizScore quizScore) {
        studentRepo.findById(quizScore.getStudent().getId())
-               .orElseThrow(()-> new RuntimeException ("Student not found"));
+               .orElseThrow(()-> new ResourceNotFoundException("Student not found"));
        subjectRepo.findById(quizScore.getSubject().getId())
-               .orElseThrow(()-> new RuntimeException ("Subject not found"));
+               .orElseThrow(()-> new ResourceNotFoundException("Subject not found"));
        return quizScoreRepo.save(quizScore);
     }
 
     @Override
     public QuizScore getQuizScoreById(Long id) {
         return quizScoreRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Quiz score not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Quiz score not found with id: " + id));
     }
 
     @Override
