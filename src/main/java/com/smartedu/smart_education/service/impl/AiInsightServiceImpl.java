@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smartedu.smart_education.entity.AiInsight;
 import com.smartedu.smart_education.entity.Score;
 import com.smartedu.smart_education.entity.Student;
+import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.AiInsightRepository;
 import com.smartedu.smart_education.repository.ScoreRepository;
 import com.smartedu.smart_education.repository.StudentRepository;
@@ -40,7 +41,7 @@ public class AiInsightServiceImpl implements AiInsightService {
     @Override
     public AiInsight generateInsight(Long studentId) {
         Student student = studentRepo.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
 
         List<Score> scores = scoreRepo.findByStudentId(studentId);
         String prompt = buildInsightPrompt(student, scores);
@@ -60,7 +61,7 @@ public class AiInsightServiceImpl implements AiInsightService {
     @Override
     public AiInsight getLatestInsight(Long studentId) {
         return aiInsightRepo.findTopByStudentIdOrderByGeneratedOnDesc(studentId)
-                .orElseThrow(() -> new RuntimeException("No insights found for student: " + studentId));
+                .orElseThrow(() -> new ResourceNotFoundException("No insights found for student: " + studentId));
     }
 
     @Override
@@ -71,7 +72,7 @@ public class AiInsightServiceImpl implements AiInsightService {
     @Override
     public void deleteInsight(Long id) {
         AiInsight insight = aiInsightRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Insight not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Insight not found with id: " + id));
         aiInsightRepo.delete(insight);
     }
 
