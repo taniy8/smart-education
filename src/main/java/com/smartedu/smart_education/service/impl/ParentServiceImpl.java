@@ -2,6 +2,7 @@ package com.smartedu.smart_education.service.impl;
 
 import com.smartedu.smart_education.entity.Parent;
 import com.smartedu.smart_education.entity.User;
+import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.ParentRepository;
 import com.smartedu.smart_education.repository.StudentRepository;
 import com.smartedu.smart_education.repository.UserRepository;
@@ -28,7 +29,7 @@ public class ParentServiceImpl implements ParentService {
     @Override
     public Parent getParentById(Long id) {
         return parentRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Parent not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Parent not found with id: " + id));
     }
 
     @Override
@@ -39,9 +40,9 @@ public class ParentServiceImpl implements ParentService {
     @Override
     public Parent addParent(Parent parent) {
         studentRepo.findById(parent.getStudent().getId())
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
         User user = userRepo.findById(parent.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         parent.setUser(user);
         return parentRepo.save(parent);
     }
