@@ -1,6 +1,7 @@
 package com.smartedu.smart_education.service.impl;
 
 import com.smartedu.smart_education.entity.Score;
+import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.ScoreRepository;
 import com.smartedu.smart_education.repository.StudentRepository;
 import com.smartedu.smart_education.repository.SubjectRepository;
@@ -26,17 +27,17 @@ public class ScoreServiceImpl implements ScoreService {
     @Override
     public Score addScore(Score score) {
         studentRepo.findById(score.getStudent().getId())
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
 
         subjectRepo.findById(score.getSubject().getId())
-                .orElseThrow(() -> new RuntimeException("Subject not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Subject not found"));
 
         return scoreRepo.save(score);
     }
 
     @Override
     public Score getScoreById(Long id) {
-        return scoreRepo.findById(id).orElseThrow(()-> new RuntimeException("Score not found"));
+        return scoreRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Score not found"));
     }
 
     @Override
