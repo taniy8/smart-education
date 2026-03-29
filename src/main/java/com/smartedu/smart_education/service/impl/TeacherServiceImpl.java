@@ -2,6 +2,7 @@ package com.smartedu.smart_education.service.impl;
 
 import com.smartedu.smart_education.entity.Teacher;
 import com.smartedu.smart_education.entity.User;
+import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.TeacherRepository;
 import com.smartedu.smart_education.repository.UserRepository;
 import com.smartedu.smart_education.service.TeacherService;
@@ -24,10 +25,10 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher addTeacher(Teacher teacher) {
         if (teacherRepo.existsByEmployeeCode(teacher.getEmployeeCode())) {
-            throw new RuntimeException("Employee code already exists: " + teacher.getEmployeeCode());
+            throw new ResourceNotFoundException("Employee code already exists: " + teacher.getEmployeeCode());
         }
         User user = userRepo.findById(teacher.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         teacher.setUser(user);
 
         return teacherRepo.save(teacher);
@@ -49,7 +50,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher getTeacherById(Long id) {
         return teacherRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Teacher not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Teacher not found with id: " + id));
     }
 
     @Override
@@ -65,6 +66,6 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Teacher getTeacherByEmployeeCode(String employeeCode) {
         return teacherRepo.findByEmployeeCode(employeeCode)
-                .orElseThrow(() -> new RuntimeException("Teacher not found: " + employeeCode));
+                .orElseThrow(() -> new ResourceNotFoundException("Teacher not found: " + employeeCode));
     }
 }

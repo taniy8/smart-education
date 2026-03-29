@@ -1,6 +1,7 @@
 package com.smartedu.smart_education.service.impl;
 
 import com.smartedu.smart_education.entity.User;
+import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.UserRepository;
 import com.smartedu.smart_education.service.UserService;
 import jakarta.transaction.Transactional;
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(User user) {
         if (userRepo.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Email already registered: " + user.getEmail());
+            throw new ResourceNotFoundException("Email already registered: " + user.getEmail());
         }
         return userRepo.save(user);
     }
@@ -29,13 +30,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long id) {
         return userRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
     @Override
     public User getUserByEmail(String email) {
         return userRepo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
     }
 
     @Override

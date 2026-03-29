@@ -1,6 +1,7 @@
 package com.smartedu.smart_education.service.impl;
 
 import com.smartedu.smart_education.entity.Subject;
+import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.SubjectRepository;
 import com.smartedu.smart_education.service.SubjectService;
 import jakarta.transaction.Transactional;
@@ -26,7 +27,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Subject addSubject(Subject subject) {
       if(subjectRepo.existsByCode(subject.getCode())){
-          throw  new RuntimeException("Subject Code already exists: " + subject.getCode());
+          throw  new ResourceNotFoundException("Subject Code already exists: " + subject.getCode());
       }
           return subjectRepo.save(subject);
     }
@@ -34,7 +35,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Subject getSubjectById(Long id) {
         return subjectRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Subject not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Subject not found with id: " + id));
     }
 
     @Override
