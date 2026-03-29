@@ -2,6 +2,7 @@ package com.smartedu.smart_education.service.impl;
 
 import com.smartedu.smart_education.entity.Student;
 import com.smartedu.smart_education.entity.User;
+import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.StudentRepository;
 import com.smartedu.smart_education.repository.UserRepository;
 import com.smartedu.smart_education.service.StudentService;
@@ -28,7 +29,7 @@ public class StudentServiceImpl implements StudentService {
          throw  new RuntimeException("Student already exists");
        }
         User user = userRepo.findById(student.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         student.setUser(user);
         return studentRepo.save(student);
     }
@@ -36,13 +37,13 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getStudentById(Long id) {
         return studentRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
     }
 
     @Override
     public Student getStudentByRollNumber(String rollNumber) {
         return studentRepo.findByRollNumber(rollNumber)
-                .orElseThrow(() -> new RuntimeException("Student not found: " + rollNumber));
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found: " + rollNumber));
     }
 
     @Override
