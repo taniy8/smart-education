@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.smartedu.smart_education.entity.AiInsight;
 import com.smartedu.smart_education.entity.Score;
 import com.smartedu.smart_education.entity.Student;
+import com.smartedu.smart_education.exception.AiServiceException;
 import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.AiInsightRepository;
 import com.smartedu.smart_education.repository.ScoreRepository;
@@ -131,7 +132,7 @@ public class AiInsightServiceImpl implements AiInsightService {
             Map<String, Object> messageResponse = (Map<String, Object>) firstChoice.get("message");
             return (String) messageResponse.get("content");
         } catch (Exception e) {
-            throw new RuntimeException("Failed to call OpenAI API: " + e.getMessage());
+            throw new AiServiceException("Failed to call OpenAI API: " + e.getMessage());
         }
     }
 
