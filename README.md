@@ -135,7 +135,7 @@ Currently in development.
 - [x] AI Integration
 - [ ] Input Validation
 - [ ] Swagger UI
-- [ ] Frontend Dashboard
+- [ ] Deploy
 
 ---
 
