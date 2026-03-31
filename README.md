@@ -133,6 +133,7 @@ Currently in development.
 - [x] JWT Authentication
 - [x] Role based access
 - [x] AI Integration
+- [ ] Input Validation
 - [ ] Frontend Dashboard
 
 ---
