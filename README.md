@@ -134,6 +134,7 @@ Currently in development.
 - [x] Role based access
 - [x] AI Integration
 - [ ] Input Validation
+- [ ] Swagger UI
 - [ ] Frontend Dashboard
 
 ---
