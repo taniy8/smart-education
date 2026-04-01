@@ -1,8 +1,10 @@
 package com.smartedu.smart_education.Controller;
 
-import com.smartedu.smart_education.entity.Student;
+import com.smartedu.smart_education.dto.request.StudentRequest;
+import com.smartedu.smart_education.dto.response.StudentResponse;
 import com.smartedu.smart_education.service.StudentService;
-import com.smartedu.smart_education.service.UserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,46 +12,46 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/students")
+@RequiredArgsConstructor
 public class StudentController {
+
     private final StudentService studentService;
-    private final UserService userService;
-    public StudentController(StudentService studentService, UserService userService) {
-        this.studentService = studentService;
-        this.userService = userService;
-    }
 
     @GetMapping
-    public ResponseEntity<List<Student>> getAllStudents() {
+    public ResponseEntity<List<StudentResponse>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+    public ResponseEntity<StudentResponse> getStudentById(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getStudentById(id));
     }
 
-    @GetMapping("/roll/{rollNo}")
-    public ResponseEntity<Student> getStudentByRollNo(@PathVariable String rollNo) {
-        return ResponseEntity.ok(studentService.getStudentByRollNumber(rollNo));
+    @GetMapping("/roll/{rollNumber}")
+    public ResponseEntity<StudentResponse> getStudentByRollNumber(@PathVariable String rollNumber) {
+        return ResponseEntity.ok(studentService.getStudentByRollNumber(rollNumber));
     }
+
     @GetMapping("/class/{className}")
-    public ResponseEntity<List<Student>> getStudentsByClass(@PathVariable String className) {
+    public ResponseEntity<List<StudentResponse>> getStudentsByClass(@PathVariable String className) {
         return ResponseEntity.ok(studentService.getStudentsByClass(className));
     }
 
     @GetMapping("/class/{className}/section/{section}")
-    public ResponseEntity<List<Student>> getStudentsByClassAndSection(@PathVariable String className,
-                                                                      @PathVariable String section) {
+    public ResponseEntity<List<StudentResponse>> getStudentsByClassAndSection(@PathVariable String className,
+                                                                              @PathVariable String section) {
         return ResponseEntity.ok(studentService.getStudentsByClassAndSection(className, section));
     }
 
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
-        return ResponseEntity.ok(studentService.addStudent(student));
+    public ResponseEntity<StudentResponse> addStudent(@Valid @RequestBody StudentRequest request) {
+        return ResponseEntity.status(201).body(studentService.addStudent(request));
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id,
-                                                 @RequestBody Student student) {
-        return ResponseEntity.ok(studentService.updateStudent(id, student));
+    public ResponseEntity<StudentResponse> updateStudent(@PathVariable Long id,
+                                                         @Valid @RequestBody StudentRequest request) {
+        return ResponseEntity.ok(studentService.updateStudent(id, request));
     }
 
     @DeleteMapping("/{id}")
