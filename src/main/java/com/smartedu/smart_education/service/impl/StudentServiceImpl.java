@@ -1,81 +1,97 @@
 package com.smartedu.smart_education.service.impl;
 
+import com.smartedu.smart_education.dto.request.StudentRequest;
+import com.smartedu.smart_education.dto.response.StudentResponse;
 import com.smartedu.smart_education.entity.Student;
 import com.smartedu.smart_education.entity.User;
 import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.StudentRepository;
 import com.smartedu.smart_education.repository.UserRepository;
 import com.smartedu.smart_education.service.StudentService;
-import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
-    private final UserRepository userRepo;
+
     private final StudentRepository studentRepo;
-
-    public StudentServiceImpl(UserRepository userRepo, StudentRepository studentRepo) {
-        this.userRepo = userRepo;
-        this.studentRepo = studentRepo;
-    }
+    private final UserRepository userRepo;
 
     @Override
-    public Student addStudent(Student student) {
-       if(studentRepo.existsByRollNumber(student.getRollNumber()))
-       {
-         throw  new RuntimeException("Student already exists");
-       }
-        User user = userRepo.findById(student.getUser().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public StudentResponse addStudent(StudentRequest request) {
+        if (studentRepo.existsByRollNumber(request.getRollNumber())) {
+            throw new RuntimeException("Roll number already exists: " + request.getRollNumber());
+        }
+        User user = userRepo.findById(request.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", request.getUserId()));
+
+        Student student = new Student();
+        student.setRollNumber(request.getRollNumber());
+        student.setClassName(request.getClassName());
+        student.setSection(request.getSection());
+        student.setDateOfBirth(request.getDateOfBirth());
+        student.setPhone(request.getPhone());
+        student.setAddress(request.getAddress());
         student.setUser(user);
-        return studentRepo.save(student);
+
+        return StudentResponse.fromEntity(studentRepo.save(student));
     }
 
     @Override
-    public Student getStudentById(Long id) {
-        return studentRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
+    public StudentResponse getStudentById(Long id) {
+        return StudentResponse.fromEntity(studentRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", id)));
     }
 
     @Override
-    public Student getStudentByRollNumber(String rollNumber) {
-        return studentRepo.findByRollNumber(rollNumber)
-                .orElseThrow(() -> new ResourceNotFoundException("Student not found: " + rollNumber));
+    public StudentResponse getStudentByRollNumber(String rollNumber) {
+        return StudentResponse.fromEntity(studentRepo.findByRollNumber(rollNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with roll number: " + rollNumber)));
     }
 
     @Override
-    public List<Student> getAllStudents() {
-        return studentRepo.findAll();
+    public List<StudentResponse> getAllStudents() {
+        return studentRepo.findAll().stream()
+                .map(StudentResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Student> getStudentsByClass(String className) {
-        return studentRepo.findByClassName(className);
+    public List<StudentResponse> getStudentsByClass(String className) {
+        return studentRepo.findByClassName(className).stream()
+                .map(StudentResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Student> getStudentsByClassAndSection(String className, String section) {
-        return studentRepo.findByClassNameAndSection(className,section);
+    public List<StudentResponse> getStudentsByClassAndSection(String className, String section) {
+        return studentRepo.findByClassNameAndSection(className, section).stream()
+                .map(StudentResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Student updateStudent(Long id, Student updatedStudent) {
-        Student existing = getStudentById(id);
-        existing.setClassName(updatedStudent.getClassName());
-        existing.setSection(updatedStudent.getSection());
-        existing.setPhone(updatedStudent.getPhone());
-        existing.setAddress(updatedStudent.getAddress());
-        existing.setDateOfBirth(updatedStudent.getDateOfBirth());
-        return studentRepo.save(existing);
-
+    public StudentResponse updateStudent(Long id, StudentRequest request) {
+        Student existing = studentRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", id));
+        existing.setClassName(request.getClassName());
+        existing.setSection(request.getSection());
+        existing.setPhone(request.getPhone());
+        existing.setAddress(request.getAddress());
+        existing.setDateOfBirth(request.getDateOfBirth());
+        return StudentResponse.fromEntity(studentRepo.save(existing));
     }
 
     @Override
     public void deleteStudent(Long id) {
-        Student student = getStudentById(id);
+        Student student = studentRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Student", id));
         studentRepo.delete(student);
     }
 }
