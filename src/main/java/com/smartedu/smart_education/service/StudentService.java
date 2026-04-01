@@ -1,16 +1,17 @@
 package com.smartedu.smart_education.service;
 
-import com.smartedu.smart_education.entity.Student;
+import com.smartedu.smart_education.dto.request.StudentRequest;
+import com.smartedu.smart_education.dto.response.StudentResponse;
 
 import java.util.List;
 
 public interface StudentService {
-    Student addStudent(Student student);
-    Student getStudentById(Long id);
-    Student getStudentByRollNumber(String rollNumber);
-    List<Student> getAllStudents();
-    List<Student> getStudentsByClass(String className);
-    List<Student> getStudentsByClassAndSection(String className, String section);
-    Student updateStudent(Long id, Student student);
+    StudentResponse addStudent(StudentRequest request);
+    StudentResponse getStudentById(Long id);
+    StudentResponse getStudentByRollNumber(String rollNumber);
+    List<StudentResponse> getAllStudents();
+    List<StudentResponse> getStudentsByClass(String className);
+    List<StudentResponse> getStudentsByClassAndSection(String className, String section);
+    StudentResponse updateStudent(Long id, StudentRequest request);
     void deleteStudent(Long id);
 }
