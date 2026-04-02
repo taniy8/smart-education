@@ -1,16 +1,16 @@
 package com.smartedu.smart_education.service;
 
-import com.smartedu.smart_education.entity.Teacher;
+import com.smartedu.smart_education.dto.request.TeacherRequest;
+import com.smartedu.smart_education.dto.response.TeacherResponse;
 
 import java.util.List;
 
 public interface TeacherService {
-    Teacher addTeacher(Teacher teacher);
-    Teacher updateTeacher(Long id,Teacher updatedTeacher);
+    TeacherResponse addTeacher(TeacherRequest request);
+    TeacherResponse getTeacherById(Long id);
+    TeacherResponse getTeacherByEmployeeCode(String employeeCode);
+    List<TeacherResponse> getAllTeachers();
+    List<TeacherResponse> getTeachersByDepartment(String department);
+    TeacherResponse updateTeacher(Long id, TeacherRequest request);
     void deleteTeacher(Long id);
-    Teacher getTeacherById(Long id);
-    List<Teacher> getAllTeacherByDepartment(String department);
-    List<Teacher> getAllTeacher();
-    Teacher getTeacherByEmployeeCode(String employeeCode);
-
 }
