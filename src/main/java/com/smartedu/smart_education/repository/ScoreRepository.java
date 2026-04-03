@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -19,4 +20,6 @@ public interface ScoreRepository extends JpaRepository<Score,Long> {
     @Query("SELECT AVG(s.marks) FROM Score s WHERE s.student.id = :studentId AND s.subject.id = :subjectId")
     Double findAverageMarksByStudentIdAndSubjectId(@Param("studentId") Long studentId,
                                                    @Param("subjectId") Long subjectId);
+
+    List<Score> findByStudentIdAndSubjectId(Long studentId, Long subjectId);
 }
