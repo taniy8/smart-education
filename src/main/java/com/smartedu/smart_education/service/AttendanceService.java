@@ -1,17 +1,16 @@
 package com.smartedu.smart_education.service;
 
-import com.smartedu.smart_education.entity.Attendance;
-import com.smartedu.smart_education.entity.Student;
+import com.smartedu.smart_education.dto.request.AttendanceRequest;
+import com.smartedu.smart_education.dto.response.AttendanceResponse;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface AttendanceService {
-    List<Attendance> getAttendanceByStudent(Long studentId);
-    Attendance markAttendance(Attendance attendance);
-    List<Attendance> getAttendanceBetweenDates(Long studentId, LocalDate startDate, LocalDate endDate);
+    AttendanceResponse markAttendance(AttendanceRequest request);
+    List<AttendanceResponse> getAttendanceByStudent(Long studentId);
+    List<AttendanceResponse> getAttendanceBetweenDates(Long studentId, LocalDate start, LocalDate end);
     Double getAttendancePercentage(Long studentId);
     Long getTotalPresentDays(Long studentId);
-    Attendance updateAttendance(Long id, Attendance updatedAttendance);
-
+    AttendanceResponse updateAttendance(Long id, AttendanceRequest request);
 }
