@@ -1,7 +1,10 @@
 package com.smartedu.smart_education.Controller;
 
+import com.smartedu.smart_education.dto.request.SubjectRequest;
 import com.smartedu.smart_education.entity.Subject;
 import com.smartedu.smart_education.service.SubjectService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,12 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/subjects")
+@RequiredArgsConstructor
 public class SubjectController {
-    private final SubjectService subjectService;
 
-    public SubjectController(SubjectService subjectService) {
-        this.subjectService = subjectService;
-    }
+    private final SubjectService subjectService;
 
     @GetMapping
     public ResponseEntity<List<Subject>> getAllSubjects() {
@@ -33,18 +34,18 @@ public class SubjectController {
 
     @GetMapping("/class/{className}")
     public ResponseEntity<List<Subject>> getSubjectsByClass(@PathVariable String className) {
-        return ResponseEntity.ok(subjectService.getSubjectByClass(className));
+        return ResponseEntity.ok(subjectService.getSubjectsByClass(className));
     }
 
     @PostMapping
-    public ResponseEntity<Subject> addSubject(@RequestBody Subject subject) {
-        return ResponseEntity.status(201).body(subjectService.addSubject(subject));
+    public ResponseEntity<Subject> addSubject(@Valid @RequestBody SubjectRequest request) {
+        return ResponseEntity.status(201).body(subjectService.addSubject(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Subject> updateSubject(@PathVariable Long id,
-                                                 @RequestBody Subject subject) {
-        return ResponseEntity.ok(subjectService.updateSubject(id, subject));
+                                                 @Valid @RequestBody SubjectRequest request) {
+        return ResponseEntity.ok(subjectService.updateSubject(id, request));
     }
 
     @DeleteMapping("/{id}")

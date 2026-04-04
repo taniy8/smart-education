@@ -1,17 +1,15 @@
 package com.smartedu.smart_education.service;
 
+import com.smartedu.smart_education.dto.response.UserResponse;
 import com.smartedu.smart_education.entity.User;
 
 import java.util.List;
 
 public interface UserService {
-    User registerUser(User user);
-
-    User getUserById(Long id);
-
-    User getUserByEmail(String email);
-    List<User> getAllUsersByRole(User.Role role);
-    List<User> getActiveUsers();
-    void deactivateUserById(Long id);
-    void activateUserById(Long id);
+    UserResponse getUserById(Long id);
+    UserResponse getUserByEmail(String email);
+    List<UserResponse> getUsersByRole(User.Role role);
+    List<UserResponse> getActiveUsers();
+    void deactivateUser(Long id);
+    void activateUser(Long id);
 }
