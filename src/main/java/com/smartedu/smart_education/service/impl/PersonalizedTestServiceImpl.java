@@ -87,19 +87,16 @@ public class PersonalizedTestServiceImpl implements PersonalizedTestService {
                 difficulty.name() + " level test on " +
                 subject.getName() + " for class " +
                 student.getClassName() + " student.\n\n" +
-                "Format each question as:\n" +
-                "Q1: [Question]\n" +
-                "A) [Option]\n" +
-                "B) [Option]\n" +
-                "C) [Option]\n" +
-                "D) [Option]\n" +
-                "Answer: [Correct option]\n\n" +
-                "Make questions appropriate for the difficulty level.";
+                "Return ONLY a valid JSON array, no explanation, no markdown, no extra text:\n" +
+                "[{\n" +
+                "  \"question\": \"...\",\n" +
+                "  \"options\": {\"A\": \"...\", \"B\": \"...\", \"C\": \"...\", \"D\": \"...\"},\n" +
+                "  \"answer\": \"A\"\n" +
+                "}]";
     }
-
     // Call OpenAI API
     private String callOpenAI(String prompt) {
-        String url = "https://api.openai.com/v1/chat/completions";
+        String url = "https://api.groq.com/openai/v1/chat/completions";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -110,7 +107,7 @@ public class PersonalizedTestServiceImpl implements PersonalizedTestService {
         message.put("content", prompt);
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "gpt-3.5-turbo");
+        requestBody.put("model", "llama-3.3-70b-versatile");
         requestBody.put("messages", List.of(message));
         requestBody.put("max_tokens", 1000);
         requestBody.put("temperature", 0.7);
@@ -123,7 +120,9 @@ public class PersonalizedTestServiceImpl implements PersonalizedTestService {
             List<Map<String, Object>> choices = (List<Map<String, Object>>) responseBody.get("choices");
             Map<String, Object> firstChoice = choices.get(0);
             Map<String, Object> messageResponse = (Map<String, Object>) firstChoice.get("message");
-            return (String) messageResponse.get("content");
+            String raw = (String) messageResponse.get("content");
+            raw = raw.replaceAll("(?s)```json\\s*", "").replaceAll("```", "").trim();
+            return raw;
         } catch (Exception e) {
             throw new RuntimeException("Failed to call OpenAI API: " + e.getMessage());
         }

@@ -11,9 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ScoreRepository extends JpaRepository<Score,Long> {
-    List<Score> findByStudentAndSubjectId(Long studentId,Long subjectId);
     List<Score> findByStudentId(Long studentId);
-    Double findAverageMarksByStudentAndSubjectId(Long studentId,Long subjectId);
     @Query("SELECT s FROM Score s WHERE s.student.id = :studentId AND s.marks < :threshold")
     List<Score> findWeakScores(@Param("studentId")Long studentId,
                                @Param("threshold") Double threshold);
