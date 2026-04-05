@@ -106,7 +106,7 @@ public class AiInsightServiceImpl implements AiInsightService {
     }
 
     private String callOpenAI(String prompt) {
-        String url = "https://api.openai.com/v1/chat/completions";
+        String url = "https://api.groq.com/openai/v1/chat/completions";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -117,7 +117,7 @@ public class AiInsightServiceImpl implements AiInsightService {
         message.put("content", prompt);
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "gpt-3.5-turbo");
+        requestBody.put("model", "llama-3.3-70b-versatile");
         requestBody.put("messages", List.of(message));
         requestBody.put("max_tokens", 1000);
         requestBody.put("temperature", 0.7);
