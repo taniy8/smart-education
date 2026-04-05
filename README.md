@@ -1,12 +1,64 @@
 # Smart Education Analytics System
 
-An AI-powered education management backend built with Spring Boot for schools and colleges. Tracks student performance, attendance, and quiz scores — and generates personalized AI insights, study plans, and tests using Groq (Llama 3.3).
+A production-deployed REST API backend built with Spring Boot that solves a real problem: schools have student data but no intelligent way to act on it. This system analyzes exam scores, attendance, and quiz performance — then uses AI to generate personalized study plans, identify weak areas, and create adaptive tests for each student.
+
+
+**Live API:** https://smart-education-production.up.railway.app
+
+**API Docs:** https://smart-education-production.up.railway.app/swagger-ui/index.html
 
 ---
 
-## Live Demo
+## Built With Purpose
 
-https://smart-education-production.up.railway.app
+- Deployed to production on Railway with a live MySQL database
+- AI integration using Groq (Llama 3.3-70b) for real personalized insights — not hardcoded responses
+- JWT authentication with 4 role-based access levels enforced at the endpoint level
+- 25+ REST endpoints across 8 controllers with proper separation of concerns
+- Adaptive test generation that adjusts difficulty based on student weak areas
+- Global exception handling with structured error responses
+- Swagger UI for interactive API documentation
+
+---
+
+## System Architecture
+
+```
+Client (Postman / Frontend)
+            |
+            v
+    Spring Security Layer
+    (JWT Filter + Role Check)
+            |
+            v
+    REST Controllers (8)
+            |
+            v
+    Service Layer (Business Logic)
+            |
+        +---+---+
+        |       |
+        v       v
+   MySQL DB   Groq AI API
+   (JPA /    (Llama 3.3)
+  Hibernate)
+```
+
+---
+
+## How It Works
+
+```
+1. User registers / logs in  →  receives JWT token
+2. Teacher enters scores      →  stored in MySQL
+3. Student requests insights  →  system sends scores to Groq AI
+4. Groq AI analyzes data      →  returns weak areas, study plan, parent summary
+5. Student requests test      →  AI generates MCQs based on weak subjects
+6. Results stored in DB       →  accessible via REST API
+```
+
+---
+
 
 
 ---
@@ -21,7 +73,7 @@ https://smart-education-production.up.railway.app
 - [API Documentation](#api-documentation)
 - [Security](#security)
 - [AI Integration](#ai-integration)
-- [Author](#author)
+- [Authors](#authors)
 
 ---
 
