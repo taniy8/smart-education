@@ -6,7 +6,8 @@ An AI-powered education management backend built with Spring Boot for schools an
 
 ## Live Demo
 
-Coming soon after deployment.
+https://smart-education-production.up.railway.app
+
 
 ---
 
