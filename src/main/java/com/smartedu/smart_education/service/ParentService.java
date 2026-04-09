@@ -1,13 +1,14 @@
 package com.smartedu.smart_education.service;
 
-import com.smartedu.smart_education.entity.Parent;
+import com.smartedu.smart_education.dto.request.ParentRequest;
+import com.smartedu.smart_education.dto.response.ParentResponse;
 
 import java.util.List;
 
 public interface ParentService {
-    Parent getParentById(Long id);
-    List<Parent> getParentsByStudent(Long studentId);
-    Parent addParent(Parent parent);
-    Parent updateParent(Long id, Parent parent);
+    ParentResponse addParent(ParentRequest request);
+    ParentResponse getParentById(Long id);
+    List<ParentResponse> getParentsByStudent(Long studentId);
+    ParentResponse updateParent(Long id, ParentRequest request);
     void deleteParent(Long id);
 }
