@@ -1,41 +1,41 @@
 package com.smartedu.smart_education.Controller;
 
-import com.smartedu.smart_education.entity.Parent;
+import com.smartedu.smart_education.dto.request.ParentRequest;
+import com.smartedu.smart_education.dto.response.ParentResponse;
 import com.smartedu.smart_education.service.ParentService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/parents")
+@RequestMapping("/api/parents")
+@RequiredArgsConstructor
 public class ParentController {
 
     private final ParentService parentService;
 
-    public ParentController(ParentService parentService) {
-        this.parentService = parentService;
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<Parent> getParentById(@PathVariable Long id) {
+    public ResponseEntity<ParentResponse> getParentById(@PathVariable Long id) {
         return ResponseEntity.ok(parentService.getParentById(id));
     }
 
     @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<Parent>> getParentsByStudent(@PathVariable Long studentId) {
+    public ResponseEntity<List<ParentResponse>> getParentsByStudent(@PathVariable Long studentId) {
         return ResponseEntity.ok(parentService.getParentsByStudent(studentId));
     }
 
     @PostMapping
-    public ResponseEntity<Parent> addParent(@RequestBody Parent parent) {
-        return ResponseEntity.status(201).body(parentService.addParent(parent));
+    public ResponseEntity<ParentResponse> addParent(@Valid @RequestBody ParentRequest request) {
+        return ResponseEntity.status(201).body(parentService.addParent(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Parent> updateParent(@PathVariable Long id,
-                                               @RequestBody Parent parent) {
-        return ResponseEntity.ok(parentService.updateParent(id, parent));
+    public ResponseEntity<ParentResponse> updateParent(@PathVariable Long id,
+                                                       @Valid @RequestBody ParentRequest request) {
+        return ResponseEntity.ok(parentService.updateParent(id, request));
     }
 
     @DeleteMapping("/{id}")
