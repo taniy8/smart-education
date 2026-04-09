@@ -1,7 +1,10 @@
 package com.smartedu.smart_education.Controller;
 
-import com.smartedu.smart_education.entity.QuizScore;
+import com.smartedu.smart_education.dto.request.QuizScoreRequest;
+import com.smartedu.smart_education.dto.response.QuizScoreResponse;
 import com.smartedu.smart_education.service.QuizScoreService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,33 +12,30 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/quiz-scores")
+@RequiredArgsConstructor
 public class QuizScoreController {
 
     private final QuizScoreService quizScoreService;
 
-    public QuizScoreController(QuizScoreService quizScoreService) {
-        this.quizScoreService = quizScoreService;
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<QuizScore> getQuizScoreById(@PathVariable Long id) {
+    public ResponseEntity<QuizScoreResponse> getQuizScoreById(@PathVariable Long id) {
         return ResponseEntity.ok(quizScoreService.getQuizScoreById(id));
     }
 
     @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<QuizScore>> getQuizScoresByStudent(@PathVariable Long studentId) {
+    public ResponseEntity<List<QuizScoreResponse>> getQuizScoresByStudent(@PathVariable Long studentId) {
         return ResponseEntity.ok(quizScoreService.getQuizScoresByStudent(studentId));
     }
 
     @GetMapping("/student/{studentId}/subject/{subjectId}")
-    public ResponseEntity<List<QuizScore>> getQuizScoresByStudentAndSubject(@PathVariable Long studentId,
-                                                                            @PathVariable Long subjectId) {
+    public ResponseEntity<List<QuizScoreResponse>> getQuizScoresByStudentAndSubject(@PathVariable Long studentId,
+                                                                                    @PathVariable Long subjectId) {
         return ResponseEntity.ok(quizScoreService.getQuizScoresByStudentAndSubject(studentId, subjectId));
     }
 
     @PostMapping
-    public ResponseEntity<QuizScore> addQuizScore(@RequestBody QuizScore quizScore) {
-        return ResponseEntity.status(201).body(quizScoreService.addQuizScore(quizScore));
+    public ResponseEntity<QuizScoreResponse> addQuizScore(@Valid @RequestBody QuizScoreRequest request) {
+        return ResponseEntity.status(201).body(quizScoreService.addQuizScore(request));
     }
 
     @DeleteMapping("/{id}")
