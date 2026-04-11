@@ -1,6 +1,7 @@
 package com.smartedu.smart_education.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smartedu.smart_education.dto.response.AiInsightResponse;
 import com.smartedu.smart_education.entity.AiInsight;
 import com.smartedu.smart_education.entity.Score;
 import com.smartedu.smart_education.entity.Student;
@@ -20,9 +21,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -40,7 +43,7 @@ public class AiInsightServiceImpl implements AiInsightService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
-    public AiInsight generateInsight(Long studentId) {
+    public AiInsightResponse generateInsight(Long studentId) {
         Student student = studentRepo.findById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + studentId));
 
@@ -56,24 +59,27 @@ public class AiInsightServiceImpl implements AiInsightService {
         insight.setStudyPlan(extractSection(gptResponse, "STUDY PLAN"));
         insight.setParentSummary(extractSection(gptResponse, "PARENT SUMMARY"));
 
-        return aiInsightRepo.save(insight);
+        return AiInsightResponse.fromEntity(aiInsightRepo.save(insight));
     }
 
     @Override
-    public AiInsight getLatestInsight(Long studentId) {
-        return aiInsightRepo.findTopByStudentIdOrderByGeneratedOnDesc(studentId)
-                .orElseThrow(() -> new ResourceNotFoundException("No insights found for student: " + studentId));
+    public AiInsightResponse getLatestInsight(Long studentId) {
+        return AiInsightResponse.fromEntity(
+                aiInsightRepo.findTopByStudentIdOrderByGeneratedOnDesc(studentId)
+                        .orElseThrow(() -> new AiServiceException("No insights found for student: " + studentId)));
     }
 
     @Override
-    public List<AiInsight> getAllInsightsByStudent(Long studentId) {
-        return aiInsightRepo.findByStudentId(studentId);
+    public List<AiInsightResponse> getAllInsightsByStudent(Long studentId) {
+        return aiInsightRepo.findByStudentId(studentId).stream()
+                .map(AiInsightResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
     public void deleteInsight(Long id) {
         AiInsight insight = aiInsightRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Insight not found with id: " + id));
+                .orElseThrow(() -> new AiServiceException("Insight", id));
         aiInsightRepo.delete(insight);
     }
 
