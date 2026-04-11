@@ -1,8 +1,10 @@
 package com.smartedu.smart_education.service.impl;
 
+import com.smartedu.smart_education.dto.response.PersonalizedTestResponse;
 import com.smartedu.smart_education.entity.PersonalizedTest;
 import com.smartedu.smart_education.entity.Student;
 import com.smartedu.smart_education.entity.Subject;
+import com.smartedu.smart_education.exception.AiServiceException;
 import com.smartedu.smart_education.exception.ResourceNotFoundException;
 import com.smartedu.smart_education.repository.PersonalizedTestRepository;
 import com.smartedu.smart_education.repository.StudentRepository;
@@ -18,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -34,8 +37,8 @@ public class PersonalizedTestServiceImpl implements PersonalizedTestService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    public PersonalizedTest generateTest(Long studentId, Long subjectId,
-                                         PersonalizedTest.Difficulty difficulty) {
+    public PersonalizedTestResponse generateTest(Long studentId, Long subjectId,
+                                                 PersonalizedTest.Difficulty difficulty) {
         // Get student and subject
         Student student = studentRepo.findById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Student not found: " + studentId));
@@ -55,28 +58,33 @@ public class PersonalizedTestServiceImpl implements PersonalizedTestService {
         test.setDifficulty(difficulty);
         test.setQuestions(questions);
 
-        return testRepo.save(test);
+        return PersonalizedTestResponse.fromEntity(testRepo.save(test));
     }
 
     @Override
-    public PersonalizedTest getTestById(Long id) {
-        return testRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Test not found: " + id));
+    public PersonalizedTestResponse getTestById(Long id) {
+        return PersonalizedTestResponse.fromEntity(testRepo.findById(id)
+                .orElseThrow(() -> new AiServiceException("Test", id)));
     }
 
     @Override
-    public List<PersonalizedTest> getTestsByStudent(Long studentId) {
-        return testRepo.findByStudentId(studentId);
+    public List<PersonalizedTestResponse> getTestsByStudent(Long studentId) {
+        return testRepo.findByStudentId(studentId).stream()
+                .map(PersonalizedTestResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<PersonalizedTest> getTestsByStudentAndSubject(Long studentId, Long subjectId) {
-        return testRepo.findByStudentIdAndSubjectId(studentId, subjectId);
+    public List<PersonalizedTestResponse> getTestsByStudentAndSubject(Long studentId, Long subjectId) {
+        return testRepo.findByStudentIdAndSubjectId(studentId, subjectId).stream()
+                .map(PersonalizedTestResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
     public void deleteTest(Long id) {
-        PersonalizedTest test = getTestById(id);
+        PersonalizedTest test = testRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Test", id));
         testRepo.delete(test);
     }
 
